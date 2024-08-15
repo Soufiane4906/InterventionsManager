@@ -3,18 +3,6 @@
 
 
 # Overview
-The Cloud-Based Intervention Manager is a web application designed to streamline team intervention management. Built using the MERN stack (MongoDB, Express.js, React, and Node.js), this platform provides a user-friendly interface for efficient intervention assignment, tracking, and collaboration. The application caters to administrators and regular users, offering comprehensive features to enhance productivity and organization.
-
-
-
-### Why/Problem?
-In a dynamic work environment, effective intervention management is crucial for team success. Traditional methods of intervention tracking through spreadsheets or manual systems can be cumbersome and prone to errors. The Cloud-Based Intervention Manager aims to address these challenges by providing a centralized platform for intervention management, enabling seamless collaboration and improved workflow efficiency.
-
-
-
-### **Background**:
-With the rise of remote work and dispersed teams, there is a growing need for tools that facilitate effective communication and intervention coordination. The Cloud-Based Intervention Manager addresses this need by leveraging modern web technologies to create an intuitive and responsive intervention management solution. The MERN stack ensures scalability, while the integration of Redux Toolkit, Headless UI, and Tailwind CSS enhances user experience and performance.
-
 
 ###
 ## **Admin Features:**
