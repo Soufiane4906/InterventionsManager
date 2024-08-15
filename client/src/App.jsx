@@ -8,8 +8,8 @@ import { Toaster } from "sonner";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Login from "./pages/Login";
-import TaskDetails from "./pages/TaskDetails";
-import Tasks from "./pages/Tasks";
+import InterventionDetails from "./pages/InterventionDetails";
+import Interventions from "./pages/Interventions";
 import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Dashboard from "./pages/dashboard";
@@ -99,13 +99,13 @@ function App() {
         <Route element={<Layout />}>
           <Route index path='/' element={<Navigate to='/dashboard' />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/tasks' element={<Tasks />} />
-          <Route path='/completed/:status' element={<Tasks />} />
-          <Route path='/in-progress/:status' element={<Tasks />} />
-          <Route path='/todo/:status' element={<Tasks />} />
+          <Route path='/interventions' element={<Interventions />} />
+          <Route path='/completed/:status' element={<Interventions />} />
+          <Route path='/in-progress/:status' element={<Interventions />} />
+          <Route path='/todo/:status' element={<Interventions />} />
           <Route path='/team' element={<Users />} />
           <Route path='/trashed' element={<Trash />} />
-          <Route path='/task/:id' element={<TaskDetails />} />
+          <Route path='/intervention/:id' element={<InterventionDetails />} />
         </Route>
 
         <Route path='/log-in' element={<Login />} />

@@ -112,7 +112,7 @@ export const getNotificationsList = async (req, res) => {
     const notice = await Notice.find({
       team: userId,
       isRead: { $nin: [userId] },
-    }).populate("task", "title");
+    }).populate("intervention", "title");
 
     res.status(201).json(notice);
   } catch (error) {

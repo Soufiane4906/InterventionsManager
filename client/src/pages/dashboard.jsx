@@ -15,7 +15,8 @@ import { Chart } from "../components/Chart";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
 
-const TaskTable = ({ tasks }) => {
+
+const InterventionTable = ({ interventions }) => {
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -25,7 +26,7 @@ const TaskTable = ({ tasks }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
-        <th className='py-2'>Task Title</th>
+        <th className='py-2'>Intervention Title</th>
         <th className='py-2'>Priority</th>
         <th className='py-2'>Team</th>
         <th className='py-2 hidden md:block'>Created At</th>
@@ -33,30 +34,30 @@ const TaskTable = ({ tasks }) => {
     </thead>
   );
 
-  const TableRow = ({ task }) => (
+  const TableRow = ({ intervention }) => (
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
           <div
-            className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
+            className={clsx("w-4 h-4 rounded-full", TASK_TYPE[intervention.stage])}
           />
 
-          <p className='text-base text-black'>{task.title}</p>
+          <p className='text-base text-black'>{intervention.title}</p>
         </div>
       </td>
 
       <td className='py-2'>
         <div className='flex gap-1 items-center'>
-          <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
-            {ICONS[task.priority]}
+          <span className={clsx("text-lg", PRIOTITYSTYELS[intervention.priority])}>
+            {ICONS[intervention.priority]}
           </span>
-          <span className='capitalize'>{task.priority}</span>
+          <span className='capitalize'>{intervention.priority}</span>
         </div>
       </td>
 
       <td className='py-2'>
         <div className='flex'>
-          {task.team.map((m, index) => (
+          {intervention.team.map((m, index) => (
             <div
               key={index}
               className={clsx(
@@ -71,7 +72,7 @@ const TaskTable = ({ tasks }) => {
       </td>
       <td className='py-2 hidden md:block'>
         <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
+          {moment(intervention?.date).fromNow()}
         </span>
       </td>
     </tr>
@@ -82,8 +83,8 @@ const TaskTable = ({ tasks }) => {
         <table className='w-full'>
           <TableHeader />
           <tbody>
-            {tasks?.map((task, id) => (
-              <TableRow key={id} task={task} />
+            {interventions?.map((intervention, id) => (
+              <TableRow key={id} intervention={intervention} />
             ))}
           </tbody>
         </table>
@@ -146,26 +147,26 @@ const UserTable = ({ users }) => {
   );
 };
 const Dashboard = () => {
-  const totals = summary.tasks;
+  const totals = summary.interventions;
 
   const stats = [
     {
       _id: "1",
-      label: "TOTAL TASK",
-      total: summary?.totalTasks || 0,
+      label: "TOTAL INTERVENTION",
+      total: summary?.totalInterventions || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
-      label: "COMPLTED TASK",
+      label: "COMPLTED INTERVENTION",
       total: totals["completed"] || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
     },
     {
       _id: "3",
-      label: "TASK IN PROGRESS ",
+      label: "INTERVENTION IN PROGRESS ",
       total: totals["in progress"] || 0,
       icon: <LuClipboardEdit />,
       bg: "bg-[#f59e0b]",
@@ -217,7 +218,7 @@ const Dashboard = () => {
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
 
-        <TaskTable tasks={summary.last10Task} />
+        <InterventionTable interventions={summary.last10Intervention} />
 
         {/* /right */}
 

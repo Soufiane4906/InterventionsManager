@@ -7,7 +7,7 @@ import {
   MdKeyboardDoubleArrowUp,
   MdOutlineRestore,
 } from "react-icons/md";
-import { tasks } from "../assets/data";
+import { interventions } from "../assets/data";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";
@@ -55,7 +55,7 @@ const Trash = () => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black  text-left'>
-        <th className='py-2'>Task Title</th>
+        <th className='py-2'>Intervention Title</th>
         <th className='py-2'>Priority</th>
         <th className='py-2'>Stage</th>
         <th className='py-2 line-clamp-1'>Modified On</th>
@@ -107,7 +107,7 @@ const Trash = () => {
     <>
       <div className='w-full md:px-1 px-0 mb-6'>
         <div className='flex items-center justify-between mb-8'>
-          <Title title='Trashed Tasks' />
+          <Title title='Trashed Interventions' />
 
           <div className='flex gap-2 md:gap-4 items-center'>
             <Button
@@ -129,7 +129,7 @@ const Trash = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {tasks?.map((tk, id) => (
+                {interventions?.map((tk, id) => (
                   <TableRow key={id} item={tk} />
                 ))}
               </tbody>
