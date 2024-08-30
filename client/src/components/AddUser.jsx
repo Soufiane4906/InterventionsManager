@@ -1,26 +1,62 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "./ModalWrapper";
 import { Dialog } from "@headlessui/react";
 import Textbox from "./Textbox";
 import Loading from "./Loader";
 import Button from "./Button";
+import { useRegisterMutation } from "../redux/slices/authApiSlice";
+import { Toaster, toast } from "sonner";
+import { useUpdateUserMutation } from "../redux/slices/userApiSlice";
+import { setCredentials } from "../redux/slices/authSlice";
 
 const AddUser = ({ open, setOpen, userData }) => {
   let defaultValues = userData ?? {};
   const { user } = useSelector((state) => state.auth);
 
-  const isLoading = false,
-    isUpdating = false;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues });
+const dispatch =useDispatch();
+  const [addNewUser, {isLoading}] = useRegisterMutation();
+  const [updateUser , {isLoading : isUpdating}] = useUpdateUserMutation();
 
-  const handleOnSubmit = () => {};
+  const handleOnSubmit = async (data) => {
+    try {
+    if(userData){
+      const result= await updateUser({...data , id : userData.id}).unwrap();
+      toast.success("user updated successfully");
+      if(userData?._id===user > _id){
+        dispatch(setCredentials({...result.user}))
+      }
+
+
+    }
+else{const result=   await addNewUser({...data , password : data.email}).unwrap();
+      toast.success("user addes successfully");
+
+    }
+
+setTimeout(() => {
+  setOpen(false);
+
+}, 1500);
+//relaod page
+
+
+
+    } catch (error) {
+      console.log(error);
+      toast.error("something wrong")
+    }
+
+
+
+  };
 
   return (
     <>

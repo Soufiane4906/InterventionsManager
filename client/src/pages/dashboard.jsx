@@ -14,6 +14,8 @@ import clsx from "clsx";
 import { Chart } from "../components/Chart";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
+import { useGetDasboardStatsQuery } from "../redux/slices/interventionApiSlice";
+import Loading from "../components/Loader";
 
 
 const InterventionTable = ({ interventions }) => {
@@ -147,13 +149,22 @@ const UserTable = ({ users }) => {
   );
 };
 const Dashboard = () => {
-  const totals = summary.interventions;
+
+const{data , isLoading  }=useGetDasboardStatsQuery();
+if(isLoading)
+return
+<div className="py-10">
+  <Loading/>
+</div>
+
+
+  const totals = data?.interventions;
 
   const stats = [
     {
       _id: "1",
       label: "TOTAL INTERVENTION",
-      total: summary?.totalInterventions || 0,
+      total: data?.totalInterventions || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
@@ -201,7 +212,7 @@ const Dashboard = () => {
     );
   };
   return (
-    <div classNamee='h-full py-4'>
+    <div className='h-full py-4'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
         {stats.map(({ icon, bg, label, total }, index) => (
           <Card key={index} icon={icon} bg={bg} label={label} count={total} />
@@ -212,17 +223,17 @@ const Dashboard = () => {
         <h4 className='text-xl text-gray-600 font-semibold'>
           Chart by Priority
         </h4>
-        <Chart />
+        <Chart data={data?.graphData} />
       </div>
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
 
-        <InterventionTable interventions={summary.last10Intervention} />
+        <InterventionTable interventions={data?.last10Intervention} />
 
         {/* /right */}
 
-        <UserTable users={summary.users} />
+        <UserTable users={data?.users} />
       </div>
     </div>
   );

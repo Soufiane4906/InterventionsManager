@@ -12,6 +12,7 @@ import BoardView from "../components/BoardView";
 import { interventions } from "../assets/data";
 import Table from "../components/intervention/Table";
 import AddIntervention from "../components/intervention/AddIntervention";
+import { useGetAllTaskQuery } from "../redux/slices/interventionApiSlice";
 
 const TABS = [
   { title: "Board View", icon: <MdGridView /> },
@@ -29,11 +30,15 @@ const Interventions = () => {
 
   const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const status = params?.status || "";
 
-  return loading ? (
+  const  {data,isLoading} = useGetAllTaskQuery({
+strQuery : status , isTrashed:"",search : "",
+
+  });
+
+  return isLoading ? (
     <div className='py-10'>
       <Loading />
     </div>
@@ -65,10 +70,10 @@ const Interventions = () => {
         )}
 
         {selected !== 1 ? (
-          <BoardView interventions={interventions} />
+          <BoardView interventions={data?.interventions} />
         ) : (
           <div className='w-full'>
-            <Table interventions={interventions} />
+            <Table interventions={data?.interventions} />
           </div>
         )}
       </Tabs>

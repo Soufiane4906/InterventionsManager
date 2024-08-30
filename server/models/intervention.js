@@ -44,6 +44,8 @@ const interventionSchema = new Schema(
     assets: [String],
     team: [{ type: Schema.Types.ObjectId, ref: "User" }],
     isTrashed: { type: Boolean, default: false },
+    customer: [{ type: Schema.Types.ObjectId, ref: "customer" }],
+
   },
   { timestamps: true }
 );

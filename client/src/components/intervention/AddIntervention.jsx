@@ -7,14 +7,18 @@ import UserList from "./UserList";
 import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
-
+import {getStorage , ref , getDownloadURL , uploadBytesResumable} from "firebase/storage"
+import {app} from "../../utils/firebase"
+import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/interventionApiSlice";
+import { interventions } from "../../assets/data";
+import { toast } from "sonner";
+import CustomersList from "./CustomerList";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const uploadedFileURLs = [];
 
-const AddIntervention = ({ open, setOpen }) => {
-  const intervention = "";
+const AddIntervention = ({ open, setOpen ,  intervention }) => {
 
   const {
     register,
@@ -22,21 +26,111 @@ const AddIntervention = ({ open, setOpen }) => {
     formState: { errors },
   } = useForm();
   const [team, setTeam] = useState(intervention?.team || []);
+  //customer
+  const [customer, setCustomer] = useState(intervention?.customer || []);
   const [stage, setStage] = useState(intervention?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(
     intervention?.priority?.toUpperCase() || PRIORIRY[2]
   );
+  const [title, setTitle] = useState(intervention?.title || "");
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const submitHandler = () => {
-    // http://localhost:8080/intervention/
+  const[createIntervention , {isLoading}] =useCreateTaskMutation();
+  const[updateIntervention , {isLoading : isUpdating }] =useUpdateTaskMutation();
+
+
+  const URLS=interventions?.assets ? [ ...interventions.assets] : [];
+  const submitHandler = async(data) => {
+    for (const file of assets) {
+      setUploading(true) ;
+
+
+    try {
+    await uploadFile(file);
+    } catch (error) {
+    console.error("Error uploading file:", error. message) ;
+    return ;
+    } finally {
+    setUploading(false);
+    }
+
+
+  try {
+    const newData ={... data,
+    assets:  [ ...URLS, , ...uploadedFileURLs],
+    team,
+    customer,
+
+
+    stage,
+    priority,
+    };
+
+    const res  = intervention?._id
+    ? await updateIntervention({...newData , _id : intervention._id}).unwrap()
+    : await createIntervention(newData).unwrap();
+
+    toast.success(res.message);
+    setTimeout(() => {
+      setOpen(false);
+    }, 500);
+
+  } catch (error) {
+    console.log(error);
+    toast.error(error?.data?.message || error.error)
+  }
+};
+
+
+
+
+
+
+
+
+
+
 
   };
 
   const handleSelect = (e) => {
     setAssets(e.target.files);
   };
+
+  const uploadFile=async (file)=>{
+    const storage=getStorage(app);
+    const name=new Date().getTime() + file.name;
+    const storageRef=ref(storage , name);
+    const uploadTask=uploadBytesResumable(storageRef , file);
+
+    return new Promise((resolve,reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot)=> {
+          console.log("Uploading");
+
+        },
+        (error) =>{
+          reject(error);
+        },
+        ()=>{
+          getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL)=>{
+            uploadedFileURLs.push(downloadURL);
+            resolve();
+          })
+          .catch((error) =>{
+            reject(error);
+          });
+          }
+      );
+      });
+
+
+
+
+  }
 
   return (
     <>
@@ -46,21 +140,24 @@ const AddIntervention = ({ open, setOpen }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-            {intervention ? "UPDATE TASK" : "ADD TASK"}
+            {intervention ? "UPDATE INTERVENTION" : "ADD INTERVENTION"}
           </Dialog.Title>
 
           <div className='mt-2 flex flex-col gap-6'>
-            <Textbox
-              placeholder='Intervention Title'
-              type='text'
-              name='title'
-              label='Intervention Title'
-              className='w-full rounded'
-              register={register("title", { required: "Title is required" })}
-              error={errors.title ? errors.title.message : ""}
-            />
+          <Textbox
+  placeholder='Intervention Title'
+  type='text'
+  value={title}
+  name='title'
+  label='Intervention Title'
+  className='w-full rounded'
+  register={register("title", { required: "Title is required" })}
+  error={errors.title ? errors.title.message : ""}
+/>
+
 
             <UserList setTeam={setTeam} team={team} />
+            <CustomersList setTeam={setCustomer} team={customer} label='Customer' />
 
             <div className='flex gap-4'>
               <SelectList

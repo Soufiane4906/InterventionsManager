@@ -4,9 +4,10 @@ import User from "../models/user.js";
 
 export const createIntervention = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { userId } = "66ce61b9598343db6e4f20d7";
+    console.log("userId" , userId);
 
-    const { title, team, stage, date, priority, assets } = req.body;
+    const { title, team, customer , stage, date, priority, assets } = req.body;
 
     let text = "New intervention has been assigned to you";
     if (team?.length > 1) {
@@ -28,6 +29,7 @@ export const createIntervention = async (req, res) => {
     const intervention = await Intervention.create({
       title,
       team,
+      customer,
       stage: stage.toLowerCase(),
       date,
       priority: priority.toLowerCase(),

@@ -46,7 +46,7 @@ const linkData = [
   },
   {
     label: "Customer",
-    link: "customer",
+    link: "customers",
     icon: <FaUsersBetweenLines />,
   },
   {

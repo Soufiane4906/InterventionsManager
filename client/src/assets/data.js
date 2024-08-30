@@ -38,7 +38,7 @@ export const summary = {
       activities: [],
       subInterventions: [
         {
-          title: "Intervention manager youtube tutorial",
+          title: "Intervention manager  tutorial",
           date: "2024-02-09T00:00:00.000Z",
           tag: "tutorial",
           _id: "65c5f153b5204a81bde866c8",
@@ -192,7 +192,7 @@ export const summary = {
     },
     {
       _id: "65c45fb6af6ec0118be94052",
-      title: "Intervention Manager Youtube Video",
+      title: "Intervention Manager ",
       date: "2024-02-11T00:00:00.000Z",
       priority: "medium",
       stage: "completed",
@@ -563,6 +563,33 @@ export const summary = {
       isActive: true,
     },
   ],
+  customers: [
+    {
+      _id: "65c5f27fb5204a81bde86833",
+      name: "Client A",
+      email: "test@gmail.com",
+      createdAt: "2024-02-09T09:38:07.765Z",
+    },
+    {
+      _id: "65c3176a0fd860f958baa099",
+      name: "Emily Wilson",
+      email: "Emily@gmail.com",
+      createdAt: "2024-02-07T05:38:50.816Z",
+    },
+    {
+      _id: "65c317360fd860f958baa08e",
+      name: "Alex Johnson",
+      email: "Alex@gmail.com",
+      createdAt: "2024-02-07T05:37:58.862Z",
+    },
+    {
+      _id: "65c30b96e639681a13def0b5",
+      name: "Jane Smith",
+      email: "Jane@gmail.com",
+      createdAt: "2024-02-07T04:48:22.519Z",
+    },
+
+  ],
   interventions: {
     todo: 6,
     "in progress": 3,
@@ -624,7 +651,7 @@ export const interventions = [
     activities: [],
     subInterventions: [
       {
-        title: "Intervention manager youtube tutorial",
+        title: "Intervention manager  tutorial",
         date: "2024-02-09T00:00:00.000Z",
         tag: "tutorial",
         _id: "65c5f153b5204a81bde866c8",
@@ -773,7 +800,7 @@ export const interventions = [
   },
   {
     _id: "65c45fb6af6ec0118be94052",
-    title: "Intervention Manager Youtube Video",
+    title: "Intervention Manager ",
     date: "2024-02-11T00:00:00.000Z",
     priority: "medium",
     stage: "completed",

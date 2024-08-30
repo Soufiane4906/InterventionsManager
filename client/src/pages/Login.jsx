@@ -3,7 +3,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../redux/slices/authApiSlice";
+import { Toaster, toast } from "sonner";
+import Loading from "../components/Loader";
+import { setCredentials } from "../redux/slices/authSlice";
+
 
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
@@ -14,9 +19,28 @@ const Login = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+//login
+const [login,{isLoading}] =useLoginMutation();
+
+
 
   const submitHandler = async (data) => {
-    console.log("submit");
+   //login with try catch
+    try{
+      const result = await login(data).unwrap();
+      console.log(result);
+      dispatch(setCredentials(result));
+      navigate("/");
+      //navigate("/dashboard");
+    }
+    catch(err){
+      console.log(err);
+      //toast error
+      toast.error(err?.data?.message || err.message);
+
+
+    }
   };
 
   useEffect(() => {
@@ -32,6 +56,8 @@ const Login = () => {
             <span className='flex gap-1 py-1 px-3 border rounded-full text-sm md:text-base bordergray-300 text-gray-600'>
               Manage all your intervention in one place!
             </span>
+            <img src="https://leyacom.ma/wp-content/uploads/2024/03/Logo_Leyacom_Solutions_24.png" alt="" />
+
             <p className='flex flex-col gap-0 md:gap-4 text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-blue-700'>
               <span>Intervention</span>
               <span> Manager</span>
@@ -85,11 +111,16 @@ const Login = () => {
                 Forget Password?
               </span>
 
-              <Button
+            {
+             isLoading ? (
+
+              <Loading/>) :
+              (   <Button
                 type='submit'
                 label='Submit'
                 className='w-full h-10 bg-blue-700 text-white rounded-full'
-              />
+              />)
+              }
             </div>
           </form>
         </div>

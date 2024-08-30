@@ -6,39 +6,38 @@ import clsx from "clsx";
 import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
 import { useGetTeamListQuery } from "../../redux/slices/userApiSlice";
+import { useGetCustomerListQuery } from "../../redux/slices/customerApiSlice";
 
-const UserList = ({ setTeam, team }) => {
+const CustomersList = ({ setTeam, team }) => {
+  const { data, isLoading, refetch } = useGetCustomerListQuery();
 
-  const {data,isLoading , refetch} =useGetTeamListQuery();
-
-  //constdata
-
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleChange = (el) => {
-    setSelectedUsers(el);
-    setTeam(el?.map((u) => u._id));
+    setSelectedUser(el);
+    setTeam(el ? [el._id] : []);
   };
+
   useEffect(() => {
-    if (team?.length < 1) {
-      data && setSelectedUsers([data[0]]);
+    if (!team || team.length === 0) {
+      data && setSelectedUser(data[0]);
     } else {
-      setSelectedUsers(team);
+      const selected = data.find((user) => user._id === team[0]);
+      setSelectedUser(selected);
     }
-  }, []);
+  }, [data, team]);
 
   return (
     <div>
-      <p className='text-gray-700'>Assign Intervention To: </p>
+      <p className='text-gray-700'>Select Customer: </p>
       <Listbox
-        value={selectedUsers}
+        value={selectedUser}
         onChange={(el) => handleChange(el)}
-        multiple
       >
         <div className='relative mt-1'>
           <Listbox.Button className='relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm'>
             <span className='block truncate'>
-              {selectedUsers?.map((user) => user.name).join(", ")}
+              {selectedUser ? selectedUser.name : "Select a customer"}
             </span>
 
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
@@ -60,9 +59,9 @@ const UserList = ({ setTeam, team }) => {
                 <Listbox.Option
                   key={index}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4. ${
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
                       active ? "bg-amber-100 text-amber-900" : "text-gray-900"
-                    } `
+                    }`
                   }
                   value={user}
                 >
@@ -98,4 +97,4 @@ const UserList = ({ setTeam, team }) => {
   );
 };
 
-export default UserList;
+export default CustomersList;
